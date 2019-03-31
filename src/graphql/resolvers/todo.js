@@ -18,7 +18,7 @@ const todoResolver = {
     },
     Mutation: {
         addTodo: async (_, { content }) => {
-            const newTodo = await Todo.create({ content, });
+            const newTodo = await Todo.create({ content });
             return { success: !!newTodo };
         },
         setCompleted: async (_, { _id, completed }) => {
@@ -27,6 +27,10 @@ const todoResolver = {
         },
         deleteTodo: async (_, { _id }) => {
             const state = await Todo.deleteMany({ _id: { $in: _id } });
+            return { success: !!state.ok };
+        },
+        editTodo: async (_, { _id, content }) => {
+            const state = await Todo.updateOne({ _id }, { content });
             return { success: !!state.ok };
         }
     }

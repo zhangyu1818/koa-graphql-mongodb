@@ -42,6 +42,7 @@ const todoTypeDef = gql`
         addTodo(content: String): status!
         setCompleted(_id: ID!, completed: Boolean): status!
         deleteTodo(_id: [ID]!): status!
+        editTodo(_id:ID!,content:String!):status!
     }
 `;
 module.exports = todoTypeDef;
