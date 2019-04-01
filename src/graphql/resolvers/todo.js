@@ -2,13 +2,7 @@ const Todo = require("../../schema/todo");
 
 const todoResolver = {
     Query: {
-        todoList: async (_, { pageInfo }) => {
-            if (pageInfo) {
-                const { pageSize, currentPage } = pageInfo;
-                return await Todo.find({})
-                                 .skip((currentPage - 1) * pageSize)
-                                 .limit(pageSize);
-            }
+        todoList: async () => {
             return await Todo.find({});
         },
         todo: async (_, { content }) => {
@@ -19,19 +13,23 @@ const todoResolver = {
     Mutation: {
         addTodo: async (_, { content }) => {
             const newTodo = await Todo.create({ content });
-            return { success: !!newTodo };
+            const todoList = await Todo.find({});
+            return { success: !!newTodo, todoList };
         },
         setCompleted: async (_, { _id, completed }) => {
             const state = await Todo.updateOne({ _id }, { completed });
-            return { success: !!state.ok };
+            const todoList = await Todo.find({});
+            return { success: !!state.ok, todoList };
         },
         deleteTodo: async (_, { _id }) => {
             const state = await Todo.deleteMany({ _id: { $in: _id } });
-            return { success: !!state.ok };
+            const todoList = await Todo.find({});
+            return { success: !!state.ok, todoList };
         },
         editTodo: async (_, { _id, content }) => {
             const state = await Todo.updateOne({ _id }, { content });
-            return { success: !!state.ok };
+            const todoList = await Todo.find({});
+            return { success: !!state.ok, todoList };
         }
     }
 };

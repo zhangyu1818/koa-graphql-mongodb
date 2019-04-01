@@ -32,17 +32,18 @@ const todoTypeDef = gql`
         createAt:Date!
     }
     type Query {
-        todoList(pageInfo: pageInfo): [todo]!
+        todoList: [todo]!
         todo(content: String!): [todo]!
     }
-    type status {
-        success: Boolean
+    type updateResponse {
+        success: Boolean!
+        todoList:[todo]!
     }
     type Mutation {
-        addTodo(content: String): status!
-        setCompleted(_id: ID!, completed: Boolean): status!
-        deleteTodo(_id: [ID]!): status!
-        editTodo(_id:ID!,content:String!):status!
+        addTodo(content: String): updateResponse!
+        setCompleted(_id: ID!, completed: Boolean): updateResponse!
+        deleteTodo(_id: [ID]!): updateResponse!
+        editTodo(_id:ID!,content:String!):updateResponse!
     }
 `;
 module.exports = todoTypeDef;
